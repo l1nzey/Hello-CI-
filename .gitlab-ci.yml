@@ -1,0 +1,33 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build-job:
+  stage: build
+    - echo "Starting the build stage..."  
+    - echo "Hello, $GITLAB_USER_LOGIN! Building your project"
+    - mkdir build_artifacts 
+    - echo "This is a build artifact." > build_artifact/output.txt
+  artifacts:
+    paths:
+      - build_artifacts/
+
+
+test-job:
+  stage: test
+    - echo "Starting the test stage..."  
+    - echo "Running the tests..."
+    - cat build_artifacts/output.txt # Accessing an artifact from the build stage
+    - echo "Tests passed!"
+
+deploy-job:
+  stage: deploy
+    - echo "Starting the deploy stage..."  
+    - echo "Deploying to production environment"
+    - echo "Deployment complete!"
+environment: production
+only:
+  - main # this job only runs on the 'main' branch
+
+  
