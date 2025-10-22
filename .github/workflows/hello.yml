@@ -1,0 +1,35 @@
+stages:
+    - build
+    - test
+    - deploy
+
+build-job:
+    stage: build
+    script:
+        - echo "Starting the build stage..."  
+        - echo "Hello, $GITHUB_USER_LOGIN! building your project." 
+        - mkdir build_artifacts
+        - echo "This is a build artifact." > build_artifacts/output.txt
+    artifacts:
+        paths:
+            - build_artifacts/
+
+
+test-job:
+    stage: test
+    script:
+        - echo "Starting the test stage..."  
+        - echo "Running tests..." 
+        - cat build_artifacts/output.txt
+        - echo "Tests passed!" 
+        
+
+deploy-job:
+    stage: deploy
+    script:
+        - echo "Starting the deploy stage..." 
+        - echo "Deploying to production evnironment: $CI_COMMIT_BRANCH"
+        - echo "deployment complete!"  
+    environment: production
+    only: 
+        - main # This job only runs on the 'main' branch    
